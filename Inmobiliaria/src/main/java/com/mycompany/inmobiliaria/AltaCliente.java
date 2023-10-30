@@ -5,7 +5,11 @@
 package com.mycompany.inmobiliaria;
 
 import com.mycompany.inmobiliaria.dtos.ClienteDTO;
+import com.mycompany.inmobiliaria.excepciones.ClienteExistenteException;
+import com.mycompany.inmobiliaria.gestores.GestorCliente;
+import java.awt.Toolkit;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -17,17 +21,19 @@ public class AltaCliente extends javax.swing.JPanel {
     /**
      * Creates new form AltaCliente
      */
-   private JFrame ventana;
+    private JFrame ventana;
     private JPanel padre;
+
     public AltaCliente(JFrame ventana, JPanel padre) {
         this.ventana = ventana;
         this.padre = padre;
         ventana.setTitle("Alta Cliente - crear nuevo cliente");
         ventana.setSize(800, 700);
-       
+
         initComponents();
-         ventana.setVisible(true);
+        ventana.setVisible(true);
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -180,13 +186,70 @@ public class AltaCliente extends javax.swing.JPanel {
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
 
-        ClienteDTO dto = new  ClienteDTO(textDni.getText(), textNombre.getText(), textApellido.getText(),textTelefon.getText()); 
-        
+        GestorCliente gc = new GestorCliente();
+        ClienteDTO dto = new ClienteDTO(textDni.getText(), textNombre.getText(), textApellido.getText(), textTelefon.getText());
+        Boolean control = true;
         //Pedirle al gestor q "valide"
-        
+
+        int[] mensaje = gc.validarDatos(dto);
+
+        if (mensaje[0] == 1) {
+            JOptionPane.showMessageDialog(this, "Por favor complete todos los campos", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            control = false;
+            Toolkit.getDefaultToolkit().beep();
+
+        }
+        if (mensaje[1] == 1) {
+            JOptionPane.showMessageDialog(this, "El campo NOMBRE debe ser alfabético", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            control = false;
+            Toolkit.getDefaultToolkit().beep();
+        }
+        if (mensaje[2] == 1) {
+            JOptionPane.showMessageDialog(this, "El campo DNI sólo puede contener digitos", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            control = false;
+            Toolkit.getDefaultToolkit().beep();
+        }
+        if (mensaje[3] == 1) {
+            JOptionPane.showMessageDialog(this, "El campo Apellido debe ser alfabético", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            control = false;
+            Toolkit.getDefaultToolkit().beep();
+        }
+        if (mensaje[4] == 1) {
+            JOptionPane.showMessageDialog(this, "El campo Telefono sólo puede contener digitos", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            control = false;
+            Toolkit.getDefaultToolkit().beep();
+        }
+
+        if (control == true) {
+            int result = JOptionPane.showConfirmDialog(this, "¿Desea dar de alta este nuevo cliente?", "CONFIRMACION", JOptionPane.YES_NO_OPTION);
+            switch (result) {
+                case JOptionPane.YES_OPTION:
+                try {
+                    gc.crearCliente(dto);
+                     JOptionPane.showMessageDialog(this, "Cliente registrado exitosamente", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                } catch (ClienteExistenteException e) {
+                     JOptionPane.showMessageDialog(this, "El cliente ya se encuentra registrado", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                } catch (Exception e) {
+                    System.err.println("Ocurrió un error: " + e.getMessage());
+                }
+                break;
+                case JOptionPane.NO_OPTION:
+                    break;
+            }
+        }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+
+        int result = JOptionPane.showConfirmDialog(this, "¿Desea regresar a la pantalla de Gestionar producto?", "CONFIRMACION", JOptionPane.YES_NO_OPTION);
+        switch (result) {
+            case JOptionPane.YES_OPTION:
+                ventana.setContentPane(new GestionarCliente(ventana, this));
+                ventana.revalidate();
+                break;
+            case JOptionPane.NO_OPTION:
+                break;
+        }
 
     }//GEN-LAST:event_btnCancelarActionPerformed
 
