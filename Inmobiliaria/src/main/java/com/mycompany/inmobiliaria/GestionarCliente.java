@@ -4,6 +4,9 @@
  */
 package com.mycompany.inmobiliaria;
 
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 /**
  *
  * @author zapam
@@ -13,8 +16,16 @@ public class GestionarCliente extends javax.swing.JPanel {
     /**
      * Creates new form GestorCliente
      */
-    public GestionarCliente() {
+    private JFrame ventana;
+    private JPanel padre;
+    public GestionarCliente(JFrame ventana, JPanel padre) {
+        this.ventana = ventana;
+        this.padre = padre;
+        ventana.setTitle("Gestionar cliente");
+        ventana.setSize(800, 700);
+       
         initComponents();
+         ventana.setVisible(true);
     }
 
     /**
@@ -292,7 +303,8 @@ public class GestionarCliente extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
-
+    ventana.setContentPane(new AltaCliente(ventana, this));
+         ventana.revalidate();
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed

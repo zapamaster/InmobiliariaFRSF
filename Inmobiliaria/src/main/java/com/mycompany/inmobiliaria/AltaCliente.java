@@ -4,6 +4,10 @@
  */
 package com.mycompany.inmobiliaria;
 
+import com.mycompany.inmobiliaria.dtos.ClienteDTO;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 /**
  *
  * @author zapam
@@ -13,10 +17,17 @@ public class AltaCliente extends javax.swing.JPanel {
     /**
      * Creates new form AltaCliente
      */
-    public AltaCliente() {
+   private JFrame ventana;
+    private JPanel padre;
+    public AltaCliente(JFrame ventana, JPanel padre) {
+        this.ventana = ventana;
+        this.padre = padre;
+        ventana.setTitle("Alta Cliente - crear nuevo cliente");
+        ventana.setSize(800, 700);
+       
         initComponents();
+         ventana.setVisible(true);
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,14 +39,14 @@ public class AltaCliente extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        codigo = new javax.swing.JLabel();
+        dni = new javax.swing.JLabel();
         textDni = new javax.swing.JTextField();
-        peso = new javax.swing.JLabel();
-        textApellido = new javax.swing.JTextField();
+        apellido = new javax.swing.JLabel();
         nombre = new javax.swing.JLabel();
         textNombre = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         textTelefon = new javax.swing.JTextField();
+        textApellido = new javax.swing.JTextField();
         jPanel3 = new javax.swing.JPanel();
         btnAceptar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
@@ -44,15 +55,9 @@ public class AltaCliente extends javax.swing.JPanel {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Nuevo cliente"));
 
-        codigo.setText("DNI (*)");
+        dni.setText("DNI (*)");
 
-        peso.setText("Apellido(*)");
-
-        textApellido.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                textApellidoActionPerformed(evt);
-            }
-        });
+        apellido.setText("Apellido(*)");
 
         nombre.setText("Nombre (*)");
 
@@ -65,13 +70,14 @@ public class AltaCliente extends javax.swing.JPanel {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(27, 27, 27)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(peso)
-                    .addComponent(codigo))
+                    .addComponent(apellido)
+                    .addComponent(dni))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(textApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(textTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -90,14 +96,14 @@ public class AltaCliente extends javax.swing.JPanel {
                     .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(nombre)
                     .addComponent(textDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(codigo))
+                    .addComponent(dni))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(peso)
-                    .addComponent(textApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(apellido)
                     .addComponent(textTelefon, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addContainerGap(161, Short.MAX_VALUE))
+                    .addComponent(jLabel4)
+                    .addComponent(textApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(155, Short.MAX_VALUE))
         );
 
         btnAceptar.setText("Aceptar");
@@ -172,30 +178,30 @@ public class AltaCliente extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void textApellidoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textApellidoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_textApellidoActionPerformed
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+
+        ClienteDTO dto = new  ClienteDTO(textDni.getText(), textNombre.getText(), textApellido.getText(),textTelefon.getText()); 
+        
+        //Pedirle al gestor q "valide"
+        
+    }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
 
     }//GEN-LAST:event_btnCancelarActionPerformed
 
-    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-
-    }//GEN-LAST:event_btnAceptarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel apellido;
     private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JLabel codigo;
+    private javax.swing.JLabel dni;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel nombre;
-    private javax.swing.JLabel peso;
     private javax.swing.JTextField textApellido;
     private javax.swing.JTextField textDni;
     private javax.swing.JTextField textNombre;
