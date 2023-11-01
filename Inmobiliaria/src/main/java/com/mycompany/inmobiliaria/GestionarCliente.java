@@ -4,8 +4,14 @@
  */
 package com.mycompany.inmobiliaria;
 
+import com.mycompany.inmobiliaria.dtos.ClienteDTO;
+import com.mycompany.inmobiliaria.gestores.GestorCliente;
+import java.awt.Toolkit;
+import java.util.List;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -55,7 +61,7 @@ public class GestionarCliente extends javax.swing.JPanel {
         btnVolver = new javax.swing.JButton();
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Busqueda de caminos", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Busqueda de clientes", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
 
         DNI.setBackground(new java.awt.Color(255, 255, 255));
         DNI.setText("DNI");
@@ -111,39 +117,38 @@ public class GestionarCliente extends javax.swing.JPanel {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(51, 51, 51)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(id)
-                    .addComponent(DNI))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(textDni, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(69, 69, 69)
-                .addComponent(apellido)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(textApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnBuscar)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(DNI)
+                        .addGap(42, 42, 42)
+                        .addComponent(textDni, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(69, 69, 69)
+                        .addComponent(id)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(apellido)
+                        .addGap(18, 18, 18)
+                        .addComponent(textApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnBuscar)
-                .addGap(193, 193, 193))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(DNI)
                     .addComponent(textNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(id)
-                    .addComponent(apellido)
-                    .addComponent(textApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(id))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(DNI)
-                    .addComponent(textDni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(textApellido, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(apellido))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnBuscar)
-                .addGap(26, 26, 26))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         jPanel38.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Resultado de búsqueda", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 1, 12))); // NOI18N
@@ -296,6 +301,60 @@ public class GestionarCliente extends javax.swing.JPanel {
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
 
+        GestorCliente gc = new GestorCliente();
+        Boolean control = true;
+
+       ClienteDTO dto = new ClienteDTO(textDni.getText(), textNombre.getText(), textApellido.getText());
+
+        int[] mensaje = gc.validarDatos(dto);
+        
+        //ACA QUISIERA Q SI NO SE COMPLETA NINGUN CAMPO, ME BUSQUE TODOS LOS CLIENTES
+        
+        if (mensaje[1] == 1) {
+            JOptionPane.showMessageDialog(this, "El campo NOMBRE debe ser alfabético", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            control = false;
+            Toolkit.getDefaultToolkit().beep();
+        }
+        if (mensaje[2] == 1) {
+            JOptionPane.showMessageDialog(this, "El campo DNI sólo puede contener digitos", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            control = false;
+            Toolkit.getDefaultToolkit().beep();
+        }
+        if (mensaje[3] == 1) {
+            JOptionPane.showMessageDialog(this, "El campo Apellido debe ser alfabético", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            control = false;
+            Toolkit.getDefaultToolkit().beep();
+        }
+        if (mensaje[4] == 1) {
+            JOptionPane.showMessageDialog(this, "El campo Telefono sólo puede contener digitos", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+            control = false;
+            Toolkit.getDefaultToolkit().beep();
+        }
+
+        if (control == true) {
+            //LLENADO DE TABLA CON LOS OBJETOS TRAIDOS DE LA BD
+            /*
+            List<Producto> listaProductosDTO = gp.buscarSegunCriterio(dto);
+            DefaultTableModel model = (DefaultTableModel) tablaResultado.getModel();
+            int filas = model.getRowCount();
+            if (filas > 0) {
+                for (int i = model.getRowCount() - 1; i >= 0; i--) {
+                    model.removeRow(i);
+                }
+            }
+            if (listaProductosDTO.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "No se han encontrado productos con los criterios seleccionados.", "INFORMACION", JOptionPane.INFORMATION_MESSAGE);
+                control = false;
+                Toolkit.getDefaultToolkit().beep();
+            } else {
+
+                for (int i = 0; i < listaProductosDTO.size(); i++) {
+                    model.addRow(new Object[]{listaProductosDTO.get(i).getId(), listaProductosDTO.get(i).getNombre(), listaProductosDTO.get(i).getCodigo(), listaProductosDTO.get(i).getPeso(), listaProductosDTO.get(i).getPrecioUnitario(), listaProductosDTO.get(i).getDescripcion()});
+                }
+            }
+*/
+        }
+        
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed

@@ -22,6 +22,10 @@ public class ClienteDTO {
         this.telefono = telefono;
     }
 
+    public ClienteDTO(String text, String text0, String text1) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public String getDni() {
         return dni;
     }
